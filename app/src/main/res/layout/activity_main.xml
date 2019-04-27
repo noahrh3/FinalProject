@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/uploadPhoto"
             android:scrollbars="vertical"
-            android:text="\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )"
+            android:text="\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )"
             android:textSize="18sp"
             android:visibility="visible"
             app:fontFamily="sans-serif-black" />

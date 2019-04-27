@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#D3D3D3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:background="#4169e1"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/latex_equation"/>
+
+    <ImageView
+        android:id="@+id/math_pix"
+        android:layout_width="100dp"
+        android:layout_height="39dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        app:srcCompat="@drawable/math_pix_text" />
+
+    <TextView
+        android:id="@+id/title1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
+        android:text="TEXT"
+        android:textColor="@android:color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:fontFamily="monospace" />
+
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title1"
+        android:layout_centerHorizontal="true"
+        android:text="to"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:fontFamily="cursive" />
+
+    <ImageView
+        android:id="@+id/latex"
+        android:layout_width="278dp"
+        android:layout_height="92dp"
+        android:layout_below="@id/title2"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/latex" />
+
+    <ImageView
+        android:id="@+id/latex_equation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/latex"
+        android:adjustViewBounds="true"
+        app:srcCompat="@drawable/latex_equation" />
+
+</RelativeLayout>
