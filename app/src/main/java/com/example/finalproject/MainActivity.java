@@ -9,9 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.util.Base64;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import okhttp3.MediaType;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-            final TextView latexCode = findViewById(R.id.latexCode);
+            final TextView latexCode = findViewById(R.id.latex_code);
             latexCode.setMovementMethod(new ScrollingMovementMethod());
             final Button copyButton = findViewById(R.id.copyButton);
             copyButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     File currentImageFile = null;
+    String stringURI = null;
     @Override
     public void onActivityResult(final int requestCode, final int resultCode,
                                  final Intent resultData) {
@@ -75,11 +78,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         currentImageURI = resultData.getData();
-
-        //loadPhoto(currentPhotoURI);
+        stringURI = currentImageURI.toString();
+//        loadPhoto(currentPhotoURI);
+        Log.e("File Path",currentImageURI.getPath());
         currentImageFile = new File(currentImageURI.getPath());
-
-
+        final TextView latexCode = findViewById(R.id.latex_code);
+        latexCode.setText(makeApiCall());
     }
 
     /**
@@ -95,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             byte[] bytes = new byte[(int) currentImageFile.length()];
             fileInputStream.read(bytes);
             String base64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
-
 
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("application/json");
@@ -114,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
             return response.toString();
 
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
             return "Sure that file exists my dude?";
-
         } catch (IOException e) {
             return "our servers are weak af rn, sorry";
         }
