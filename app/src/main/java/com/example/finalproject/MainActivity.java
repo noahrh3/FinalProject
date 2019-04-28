@@ -1,10 +1,12 @@
 package com.example.finalproject;
 
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,14 +28,36 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import android.database.Cursor;
+import android.provider.MediaStore;
+import android.Manifest;
+import android.support.v4.app.ActivityCompat;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 13;
-
-
+    public static Context contextOfApplication;
+    public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }
+    private static final int EXTERMAL_STORAGE_REQUEST = 1;
+    private static String[] STORAGE_PERMISSION = {Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         {
+
+
+            contextOfApplication = getApplicationContext();
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             final TextView latexCode = findViewById(R.id.latex_code);
@@ -61,68 +85,58 @@ public class MainActivity extends AppCompatActivity {
      * called when upload photo button is pressed
      */
     private void getImage() {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT).addCategory(Intent.CATEGORY_OPENABLE).setType("image/*");
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        checkStoragePermission(this);
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    File currentImageFile = null;
-    String stringURI = null;
+
+    /**
+     * finds true path of a file given the Uri
+     * @param imageURI
+     * @return path
+     */
+    public String getTruePath(Uri imageURI) {
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(imageURI, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int colI = cursor.getColumnIndex(filePathColumn[0]);
+        String path = cursor.getString(colI);
+        cursor.close();
+        return path;
+    }
+
     @Override
     public void onActivityResult(final int requestCode, final int resultCode,
                                  final Intent resultData) {
+
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        Uri currentImageURI;
+        Uri currentImageURI = resultData.getData();
         if (requestCode != REQUEST_CODE) {
             return;
         }
-        currentImageURI = resultData.getData();
-        stringURI = currentImageURI.toString();
-//        loadPhoto(currentPhotoURI);
-        Log.e("File Path",currentImageURI.getPath());
-        currentImageFile = new File(currentImageURI.getPath());
+
+        File imageFile = new File(getTruePath(currentImageURI));
+
         final TextView latexCode = findViewById(R.id.latex_code);
-        latexCode.setText(makeApiCall());
-    }
-
-    /**
-     * called when you want to convert picture to latex
-     * @return latex string
-     */
-    public String makeApiCall() {
-        if (currentImageFile == null) {
-            return "You have to select a file bro";
-        }
         try {
-            FileInputStream fileInputStream = new FileInputStream(currentImageFile);
-            byte[] bytes = new byte[(int) currentImageFile.length()];
-            fileInputStream.read(bytes);
-            String base64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
-
-            OkHttpClient client = new OkHttpClient();
-            MediaType mediaType = MediaType.parse("application/json");
-            RequestBody body = RequestBody.create(mediaType, String.format("{ \"src\" : \"data:image/jpeg;base64,{%s}\" }", base64));
-            Request request = new Request.Builder()
-                    .url("https://api.mathpix.com/v3/latex")
-                    .addHeader("content-type", "application/json")
-                    .addHeader("app_id", "nvj1300_gmail_com")
-                    .addHeader("app_key", "92848d9f3f0f373434c3")
-                    .post(body)
-                    .build();
-            Response response = client.newCall(request).execute();
-            if (response == null) {
-                return "Sorry fam, our servers are not lit rn.";
-            }
-            return response.toString();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return "Sure that file exists my dude?";
-        } catch (IOException e) {
-            return "our servers are weak af rn, sorry";
+            latexCode.setText(new Tasks().execute(imageFile).get());
+        } catch (Exception e) {
+            Log.e("lol", "caught");
         }
     }
 
+
+    public static void checkStoragePermission(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            return;
+        } else {
+            ActivityCompat.requestPermissions(activity, STORAGE_PERMISSION, EXTERMAL_STORAGE_REQUEST);
+        }
+    }
 
 }
