@@ -37,24 +37,6 @@ import android.graphics.Bitmap;
 
 public class Tasks extends AsyncTask<File, Void, String> {
     public static boolean ApiIsWorking = false;
-    private String compress(File imageFile) {
-        Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        String encoded = Base64.encodeToString(byteArray, Base64.NO_WRAP);
-        Log.e("CHECK LENGTH", Integer.toString(byteArray.length));
-        return encoded;
-    }
-    private String compress(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        String encoded = Base64.encodeToString(byteArray, Base64.NO_WRAP);
-        Log.e("CHECK LENGTH", Integer.toString(byteArray.length));
-        return encoded;
-    }
-
     protected String doInBackground(File... imageFiles) {
         Log.e("APICHECK", "API CALLED");
         if (imageFiles.length <= 0) {
@@ -69,7 +51,9 @@ public class Tasks extends AsyncTask<File, Void, String> {
             //String base64 = compress(imageFile);
 
             FileInputStream fileInputStream = new FileInputStream(imageFile);
+
             byte[] bytes = new byte[(int) imageFile.length()];
+
             Log.e("checklength:", "image size = " + bytes.length);
             fileInputStream.read(bytes);
             String base64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
@@ -88,6 +72,7 @@ public class Tasks extends AsyncTask<File, Void, String> {
                     .addHeader("app_key", "92848d9f3f0f373434c3")
                     .post(body)
                     .build();
+
             Response response = client.newCall(request).execute();
             if (response == null) {
                 return "SERVERS_DOWN";
