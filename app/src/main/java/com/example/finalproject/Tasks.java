@@ -36,7 +36,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
 
 public class Tasks extends AsyncTask<File, Void, String> {
-
+    public static boolean ApiIsWorking = false;
     private String compress(File imageFile) {
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -56,6 +56,7 @@ public class Tasks extends AsyncTask<File, Void, String> {
     }
 
     protected String doInBackground(File... imageFiles) {
+        Log.e("APICHECK", "API CALLED");
         if (imageFiles.length <= 0) {
             return "you have to select a file bro";
         }
@@ -63,7 +64,7 @@ public class Tasks extends AsyncTask<File, Void, String> {
         if (imageFile == null) {
             return "need to select picture";
         }
-
+        ApiIsWorking = true;
         try {
             //String base64 = compress(imageFile);
 
@@ -100,6 +101,8 @@ public class Tasks extends AsyncTask<File, Void, String> {
         } catch (IOException e) {
             e.printStackTrace();
             return "check your internet man";
+        } finally {
+            ApiIsWorking = false;
         }
     }
 }

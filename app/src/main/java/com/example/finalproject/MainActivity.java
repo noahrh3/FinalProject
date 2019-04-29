@@ -39,10 +39,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 public class MainActivity extends AppCompatActivity {
     private static final int UPLOAD_REQUEST_CODE = 13;
     private static final int EXTERNAL_STORAGE_REQUEST = 1;
-    private static String[] STORAGE_PERMISSION = {Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private boolean ApiIsActive = false;
+    private static String[] STORAGE_PERMISSION = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         {
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             final Button toLatexButton = findViewById(R.id.to_latex);
             toLatexButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (!ApiIsActive) {
+                    if (!Tasks.ApiIsWorking) {
                         setLatex();
                     }
                 }
@@ -91,16 +89,13 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, UPLOAD_REQUEST_CODE);
     }
     private void setLatex() {
-        ApiIsActive = true;
         final TextView latexCode = findViewById(R.id.latex_code);
         try {
             String jsonString = new Tasks().execute(currentImageFile).get();
             latexCode.setText(JsonParser.getLatex(jsonString));
         } catch (Exception e) {
             Log.e("lol", "caught");
-            ApiIsActive = false;
         }
-        ApiIsActive = false;
     }
 
     private File currentImageFile = null;
