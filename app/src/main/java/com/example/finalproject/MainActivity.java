@@ -121,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static void checkStoragePermission(Activity activity) {
-        int hasPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    public static void checkStoragePermission(Activity mainActivity) {
+        int hasPermission = ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (hasPermission == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(activity, STORAGE_PERMISSION, EXTERNAL_STORAGE_REQUEST);
+            ActivityCompat.requestPermissions(mainActivity, STORAGE_PERMISSION, EXTERNAL_STORAGE_REQUEST);
         }
     }
 

@@ -14,19 +14,28 @@ class JsonParser {
             throw new IllegalArgumentException("Json string is null");
         }
         try {
+            if (json.equals("SERVERS_DOWN")) {
+                return "Servers may be down my dude.";
+            }
+            if (json.equals("FILE_NOT_FOUND")) {
+                return "We couldn't find that file my dude.";
+            }
+            if (json.equals("NO_INTERNET")) {
+                return "Make sure you have internet connection my dude.";
+            }
             JSONObject result = new JSONObject(json);
             try {
                 Double confidence = (Double) result.get("latex_confidence");
                 if (confidence < 0.5) {
-                    return "Cannot extract math. Try cropping better.";
+                    return "Cannot extract math. Try cropping better my dude.";
                 }
             } catch (Exception e) {
-                return "Cannot extract math. Try cropping better.";
+                return "Cannot extract math. Try cropping better my dude.";
             }
             return result.get("latex").toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return "Please select a picture.";
+            return "Please select a picture my dude";
         }
     }
 }

@@ -76,8 +76,11 @@ public class Tasks extends AsyncTask<File, Void, String> {
 
             Log.e("check base64", base64);
             OkHttpClient client = new OkHttpClient();
+
             MediaType mediaType = MediaType.parse("application/json");
+
             RequestBody body = RequestBody.create(mediaType, String.format("{ \"url\" : \"data:image/jpeg;base64,%s\" }", base64));
+
             Request request = new Request.Builder()
                     .url("https://api.mathpix.com/v3/latex")
                     .addHeader("content-type", "application/json")
@@ -87,20 +90,20 @@ public class Tasks extends AsyncTask<File, Void, String> {
                     .build();
             Response response = client.newCall(request).execute();
             if (response == null) {
-                return "Sorry fam, our servers are not lit rn.";
+                return "SERVERS_DOWN";
             }
             ResponseBody responseBody = response.body();
             if (responseBody == null) {
-                return "fug";
+                return "SERVERS_DOWN";
             }
             return responseBody.string();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return "Sure that file exists my dude?";
+            return "FILE_NOT_FOUND";
         } catch (IOException e) {
             e.printStackTrace();
-            return "check your internet man";
+            return "NO_INTERNET";
         } finally {
             ApiIsWorking = false;
         }
