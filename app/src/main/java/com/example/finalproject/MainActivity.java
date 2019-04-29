@@ -23,7 +23,9 @@ import android.provider.MediaStore;
 import android.Manifest;
 import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
-
+import android.widget.ImageView;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 13;
     public static Context contextOfApplication;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             final Button toLatexButton = findViewById(R.id.to_latex);
             toLatexButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
+                    setLatex();
                 }
             });
             final Button uploadPhoto = findViewById(R.id.upload_photo);
@@ -75,6 +77,14 @@ public class MainActivity extends AppCompatActivity {
         checkStoragePermission(this);
         startActivityForResult(intent, REQUEST_CODE);
     }
+    private void setLatex() {
+        final TextView latexCode = findViewById(R.id.latex_code);
+        try {
+            latexCode.setText(new Tasks().execute(currentImageFile).get());
+        } catch (Exception e) {
+            Log.e("lol", "caught");
+        }
+    }
 
 
     /**
@@ -91,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         cursor.close();
         return path;
     }
-
+    private File currentImageFile = null;
     @Override
     public void onActivityResult(final int requestCode, final int resultCode,
                                  final Intent resultData) {
@@ -105,13 +115,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         File imageFile = new File(getTruePath(currentImageURI));
-
-        final TextView latexCode = findViewById(R.id.latex_code);
-        try {
-            latexCode.setText(new Tasks().execute(imageFile).get());
-        } catch (Exception e) {
-            Log.e("lol", "caught");
-        }
+        ImageView imageView = findViewById(R.id.math_picture);
+        imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
+        currentImageFile = imageFile;
+//        final TextView latexCode = findViewById(R.id.latex_code);
+//        try {
+//            latexCode.setText(new Tasks().execute(imageFile).get());
+//        } catch (Exception e) {
+//            Log.e("lol", "caught");
+//        }
     }
 
 

@@ -36,12 +36,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
 
 public class Tasks extends AsyncTask<File, Void, String> {
-    private final int MAX_LENGTH = 2000000;
 
     private String compress(File imageFile) {
         Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 20, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String encoded = Base64.encodeToString(byteArray, Base64.NO_WRAP);
         Log.e("CHECK LENGTH", Integer.toString(byteArray.length));
@@ -54,7 +53,7 @@ public class Tasks extends AsyncTask<File, Void, String> {
         }
         File imageFile = imageFiles[0];
         if (imageFile == null) {
-            return "null bitch";
+            return "need to select picture";
         }
 
         try {
