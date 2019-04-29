@@ -6,7 +6,7 @@ import org.json.JSONTokener;
 import org.json.JSONException;
 
 public class JsonParser {
-    public String getLatex(final String json) {
+    public static String getLatex(final String json) {
         if (json == null) {
             return null;
         }
