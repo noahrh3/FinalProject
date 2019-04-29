@@ -5,8 +5,11 @@ import org.json.JSONStringer;
 import org.json.JSONTokener;
 import org.json.JSONException;
 
-public class JsonParser {
-    public static String getLatex(final String json) {
+/**
+ * Class to parse json string and return latex formatted string.
+ */
+class JsonParser {
+    static String getLatex(final String json) {
         if (json == null) {
             throw new IllegalArgumentException("Json string is null");
         }

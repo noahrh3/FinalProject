@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.widget.ImageView;
 import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 13;
     public static Context contextOfApplication;
@@ -42,29 +40,21 @@ public class MainActivity extends AppCompatActivity {
             contextOfApplication = getApplicationContext();
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            //Making TextView scrollable
             final TextView latexCode = findViewById(R.id.latex_code);
             latexCode.setMovementMethod(new ScrollingMovementMethod());
+            //Adding Button Handlers
             final Button copyButton = findViewById(R.id.copy_button);
-            copyButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("LaTeX", latexCode.getText());
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getApplicationContext(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
-                }
+            copyButton.setOnClickListener(v -> {
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("LaTeX", latexCode.getText());
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getApplicationContext(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
             });
             final Button toLatexButton = findViewById(R.id.to_latex);
-            toLatexButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    setLatex();
-                }
-            });
+            toLatexButton.setOnClickListener(v -> setLatex());
             final Button uploadPhoto = findViewById(R.id.upload_photo);
-            uploadPhoto.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    getImage();
-                }
-            });
+            uploadPhoto.setOnClickListener(v -> getImage());
         }
     }
 
@@ -90,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * finds true path of a file given the Uri
-     * @param imageURI
+     * @param imageURI URI to get path from
      * @return path
      */
     public String getTruePath(Uri imageURI) {
@@ -130,9 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static void checkStoragePermission(Activity activity) {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permission == PackageManager.PERMISSION_GRANTED) {
-            return;
-        } else {
+        if (permission == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(activity, STORAGE_PERMISSION, EXTERMAL_STORAGE_REQUEST);
         }
     }

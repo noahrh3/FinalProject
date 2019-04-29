@@ -16,11 +16,9 @@ public class TitleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_title);
         final Button startButton = findViewById(R.id.start_button);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        startButton.setOnClickListener(v -> {
                 Intent myIntent = new Intent(TitleActivity.this, MainActivity.class);
                 TitleActivity.this.startActivity(myIntent);
-            }
         });
     }
 }
