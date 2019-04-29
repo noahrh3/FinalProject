@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             final TextView latexCode = findViewById(R.id.latex_code);
             latexCode.setMovementMethod(new ScrollingMovementMethod());
-            final Button copyButton = findViewById(R.id.copyButton);
+            final Button copyButton = findViewById(R.id.copy_button);
             copyButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -53,13 +53,18 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
                 }
             });
+            final Button toLatexButton = findViewById(R.id.to_latex);
+            toLatexButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                }
+            });
             final Button uploadPhoto = findViewById(R.id.upload_photo);
             uploadPhoto.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        getImage();
-                    }
+                public void onClick(View v) {
+                    getImage();
                 }
-            );
+            });
         }
     }
 
