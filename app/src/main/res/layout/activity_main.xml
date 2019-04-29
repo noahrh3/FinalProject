@@ -8,18 +8,18 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/uploadPhoto"
+        android:id="@+id/upload_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/math_picture"
         android:text="Upload Photo" />
 
     <Button
-        android:id="@+id/copyButton"
+        android:id="@+id/copy_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/math_picture"
-        android:layout_toRightOf="@id/uploadPhoto"
+        android:layout_toRightOf="@id/upload_photo"
         android:text="Copy" />
 
     <ImageView
@@ -28,17 +28,25 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/limit" />
 
+    <Button
+        android:id="@+id/to_latex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Print Latex"
+        android:layout_toRightOf="@id/copy_button"
+        android:layout_below="@id/math_picture"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/uploadPhoto">
+        android:layout_below="@id/upload_photo">
 
         <TextView
             android:id="@+id/latex_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/uploadPhoto"
+            android:layout_below="@id/upload_photo"
             android:scrollbars="vertical"
             android:text="\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )\\lim _ { x \\rightarrow 3 } ( \\frac { x ^ { 2 } + 9 } { x - 3 } )"
             android:textSize="18sp"

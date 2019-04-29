@@ -6,41 +6,23 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.util.Base64;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
+
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.Manifest;
 import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 13;
@@ -71,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
                 }
             });
-            final Button uploadPhoto = findViewById(R.id.uploadPhoto);
+            final Button uploadPhoto = findViewById(R.id.upload_photo);
             uploadPhoto.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         getImage();
