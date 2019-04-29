@@ -15,12 +15,17 @@ class JsonParser {
         }
         try {
             JSONObject result = new JSONObject(json);
-            double confidence = (Double) result.get("latex_confidence");
-            if (confidence < .5) {
-                return "Image is unclear. Cannot detect math symbols.";
+            try {
+                Double confidence = (Double) result.get("latex_confidence");
+                if (confidence < 0.5) {
+                    return "Cannot extract math. Try cropping better.";
+                }
+            } catch (Exception e) {
+                return "Cannot extract math. Try cropping better.";
             }
             return result.get("latex").toString();
-        } catch (JSONException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

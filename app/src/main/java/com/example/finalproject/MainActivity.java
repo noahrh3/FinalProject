@@ -25,16 +25,18 @@ import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.widget.ImageView;
 import android.graphics.BitmapFactory;
+import android.content.ActivityNotFoundException;
 
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE = 13;
+    private static final int UPLOAD_REQUEST_CODE = 13;
+    private static final int CROP_REQUEST_CODE = 14;
     public static Context contextOfApplication;
     public static Context getContextOfApplication() {
         return contextOfApplication;
     }
-    private static final int EXTERMAL_STORAGE_REQUEST = 1;
+    private static final int EXTERNAL_STORAGE_REQUEST = 1;
     private static String[] STORAGE_PERMISSION = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         checkStoragePermission(this);
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(intent, UPLOAD_REQUEST_CODE);
     }
     private void setLatex() {
         final TextView latexCode = findViewById(R.id.latex_code);
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         return path;
     }
     private File currentImageFile = null;
+    private Uri currentImageUri = null;
     @Override
     public void onActivityResult(final int requestCode, final int resultCode,
                                  final Intent resultData) {
@@ -118,14 +121,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         Uri currentImageURI = resultData.getData();
-        if (requestCode != REQUEST_CODE) {
+        if (requestCode == UPLOAD_REQUEST_CODE) {
+            performCrop(currentImageURI);
+            return;
+        } else if (requestCode == CROP_REQUEST_CODE) {
+            File imageFile = new File(getTruePath(currentImageURI));
+            ImageView imageView = findViewById(R.id.math_picture);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
+            currentImageFile = imageFile;
             return;
         }
 
-        File imageFile = new File(getTruePath(currentImageURI));
-        ImageView imageView = findViewById(R.id.math_picture);
-        imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
-        currentImageFile = imageFile;
+//        File imageFile = new File(getTruePath(currentImageURI));
+//        ImageView imageView = findViewById(R.id.math_picture);
+//        imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
+//        currentImageFile = imageFile;
 //        final TextView latexCode = findViewById(R.id.latex_code);
 //        try {
 //            latexCode.setText(new Tasks().execute(imageFile).get());
@@ -138,8 +148,26 @@ public class MainActivity extends AppCompatActivity {
     public static void checkStoragePermission(Activity activity) {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(activity, STORAGE_PERMISSION, EXTERMAL_STORAGE_REQUEST);
+            ActivityCompat.requestPermissions(activity, STORAGE_PERMISSION, EXTERNAL_STORAGE_REQUEST);
         }
+    }
+    private void performCrop(Uri picUri) {
+        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+        //indicate image type and Uri
+        cropIntent.setDataAndType(picUri, "image/*");
+        //set crop properties
+        cropIntent.putExtra("crop", "true");
+        //indicate aspect of desired crop
+        cropIntent.putExtra("aspectX", 1);
+        cropIntent.putExtra("aspectY", 0.5);
+        //indicate output X and Y
+        cropIntent.putExtra("outputX", 256);
+        cropIntent.putExtra("outputY", 256);
+        //retrieve data on return
+        cropIntent.putExtra("return-data", true);
+        //start the activity - we handle returning in onActivityResult
+        startActivityForResult(cropIntent, CROP_REQUEST_CODE);
+
     }
 
 }

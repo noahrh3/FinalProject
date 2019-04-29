@@ -46,6 +46,14 @@ public class Tasks extends AsyncTask<File, Void, String> {
         Log.e("CHECK LENGTH", Integer.toString(byteArray.length));
         return encoded;
     }
+    private String compress(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encoded = Base64.encodeToString(byteArray, Base64.NO_WRAP);
+        Log.e("CHECK LENGTH", Integer.toString(byteArray.length));
+        return encoded;
+    }
 
     protected String doInBackground(File... imageFiles) {
         if (imageFiles.length <= 0) {
@@ -57,16 +65,13 @@ public class Tasks extends AsyncTask<File, Void, String> {
         }
 
         try {
-            String base64 = compress(imageFile);
+            //String base64 = compress(imageFile);
 
-//            FileInputStream fileInputStream = new FileInputStream(imageFile);
-//            byte[] bytes = new byte[(int) imageFile.length()];
-//            Log.e("checklength:", "image size = " + bytes.length);
-//            fileInputStream.read(bytes);
-//            String base64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
-//            if (bytes.length > MAX_LENGTH) {
-//                // compress file
-//            }
+            FileInputStream fileInputStream = new FileInputStream(imageFile);
+            byte[] bytes = new byte[(int) imageFile.length()];
+            Log.e("checklength:", "image size = " + bytes.length);
+            fileInputStream.read(bytes);
+            String base64 = Base64.encodeToString(bytes, Base64.NO_WRAP);
 
             Log.e("check base64", base64);
             OkHttpClient client = new OkHttpClient();
