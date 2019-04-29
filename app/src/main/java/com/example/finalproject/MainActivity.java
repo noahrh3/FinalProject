@@ -80,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
     private void setLatex() {
         final TextView latexCode = findViewById(R.id.latex_code);
         try {
-            latexCode.setText(new Tasks().execute(currentImageFile).get());
+            String jsonString = new Tasks().execute(currentImageFile).get();
+            latexCode.setText(JsonParser.getLatex(jsonString));
         } catch (Exception e) {
             Log.e("lol", "caught");
         }

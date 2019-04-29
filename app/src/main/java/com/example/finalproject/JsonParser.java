@@ -12,6 +12,10 @@ public class JsonParser {
         }
         try {
             JSONObject result = new JSONObject(json);
+            double confidence = (Double) result.get("latex_confidence");
+            if (confidence < .5) {
+                return "Image is unclear. Cannot detect math symbols.";
+            }
             return result.get("latex").toString();
         } catch (JSONException e) {
             return null;
