@@ -49,20 +49,29 @@ public class MainActivity extends AppCompatActivity {
             latexCode.setMovementMethod(new ScrollingMovementMethod());
             //Adding Button Handlers
             final Button copyButton = findViewById(R.id.copy_button);
-            copyButton.setOnClickListener(v -> {
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("LaTeX", latexCode.getText());
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getApplicationContext(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
+            copyButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("LaTeX", latexCode.getText());
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getApplicationContext(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
+                }
             });
             final Button toLatexButton = findViewById(R.id.to_latex);
-            toLatexButton.setOnClickListener(v -> setLatex());
-            final Button uploadPhoto = findViewById(R.id.upload_photo);
-            uploadPhoto.setOnClickListener(v -> {
-                final TextView defaultText = findViewById(R.id.default_text);
-                defaultText.setVisibility(View.INVISIBLE);
-                getImage();
+            toLatexButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    setLatex();
+                }
             });
+            final Button uploadPhoto = findViewById(R.id.upload_photo);
+            uploadPhoto.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    final TextView defaultText = findViewById(R.id.default_text);
+                    defaultText.setVisibility(View.INVISIBLE);
+                    getImage();
+                }
+            });
+
         }
     }
 
