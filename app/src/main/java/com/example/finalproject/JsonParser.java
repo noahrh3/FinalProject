@@ -8,7 +8,7 @@ import org.json.JSONException;
 public class JsonParser {
     public static String getLatex(final String json) {
         if (json == null) {
-            return null;
+            throw new IllegalArgumentException("Json string is null");
         }
         try {
             JSONObject result = new JSONObject(json);
