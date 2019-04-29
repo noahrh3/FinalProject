@@ -26,7 +26,7 @@ class JsonParser {
             return result.get("latex").toString();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return "Image size may be too big, try cropping more.";
         }
     }
 }

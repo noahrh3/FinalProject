@@ -37,21 +37,15 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MainActivity extends AppCompatActivity {
-    private static int numCalls = 0;
     private static final int UPLOAD_REQUEST_CODE = 13;
-    private static final int CROP_REQUEST_CODE = 14;
-    public static Context contextOfApplication;
-    public static Context getContextOfApplication() {
-        return contextOfApplication;
-    }
     private static final int EXTERNAL_STORAGE_REQUEST = 1;
     private static String[] STORAGE_PERMISSION = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    private boolean ApiIsActive = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         {
-            contextOfApplication = getApplicationContext();
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             //Making TextView scrollable
@@ -70,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
             final Button toLatexButton = findViewById(R.id.to_latex);
             toLatexButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    setLatex();
+                    if (!ApiIsActive) {
+                        setLatex();
+                    }
                 }
             });
             final Button uploadPhoto = findViewById(R.id.upload_photo);
@@ -95,32 +91,19 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, UPLOAD_REQUEST_CODE);
     }
     private void setLatex() {
+        ApiIsActive = true;
         final TextView latexCode = findViewById(R.id.latex_code);
         try {
             String jsonString = new Tasks().execute(currentImageFile).get();
             latexCode.setText(JsonParser.getLatex(jsonString));
         } catch (Exception e) {
             Log.e("lol", "caught");
+            ApiIsActive = false;
         }
+        ApiIsActive = false;
     }
 
-
-    /**
-     * finds true path of a file given the Uri
-     * @param imageURI URI to get path from
-     * @return path
-     */
-    public String getTruePath(Uri imageURI) {
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(imageURI, filePathColumn, null, null, null);
-        cursor.moveToFirst();
-        int colI = cursor.getColumnIndex(filePathColumn[0]);
-        String path = cursor.getString(colI);
-        cursor.close();
-        return path;
-    }
     private File currentImageFile = null;
-    private Uri currentImageUri = null;
     @Override
     public void onActivityResult(final int requestCode, final int resultCode,
                                  final Intent resultData) {
@@ -132,13 +115,6 @@ public class MainActivity extends AppCompatActivity {
             Uri currentImageURI = resultData.getData();
             beginCrop(currentImageURI);
             return;
-//        } else if (requestCode == CROP_REQUEST_CODE) {
-//            Uri currentImageURI = resultData.getData();
-//            File imageFile = new File(getTruePath(currentImageURI));
-//            ImageView imageView = findViewById(R.id.math_picture);
-//            imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
-//            currentImageFile = imageFile;
-//            return;
         } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(resultData);
             Uri resultUri = result.getUri();
@@ -151,29 +127,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static void checkStoragePermission(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permission == PackageManager.PERMISSION_DENIED) {
+        int hasPermission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (hasPermission == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(activity, STORAGE_PERMISSION, EXTERNAL_STORAGE_REQUEST);
         }
     }
-//    private void performCrop(Uri picUri) {
-//        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-//        cropIntent.setDataAndType(picUri, "image/*");
-//        cropIntent.putExtra("crop", "true");
-//        cropIntent.putExtra("aspectX", 1);
-//        cropIntent.putExtra("aspectY", 0.5);
-//        cropIntent.putExtra("outputX", 256);
-//        cropIntent.putExtra("outputY", 256);
-//        cropIntent.putExtra("return-data", true);
-//        startActivityForResult(cropIntent, CROP_REQUEST_CODE);
-//
-//    }
-//    private void startCrop(Uri picUri) {
-//        String destinationFileName = "croppedImage";
-//        UCrop uCrop = UCrop.of(picUri, Uri.fromFile(new File(getFilesDir(), destinationFileName + numCalls)));
-//        numCalls++;
-//        uCrop.start(MainActivity.this);
-//    }
 
 
     private void beginCrop(Uri picUri) {
