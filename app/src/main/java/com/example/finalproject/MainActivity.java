@@ -26,10 +26,18 @@ import android.content.pm.PackageManager;
 import android.widget.ImageView;
 import android.graphics.BitmapFactory;
 import android.content.ActivityNotFoundException;
-
+import com.yalantis.ucrop.UCrop;
+import com.yalantis.ucrop.UCropActivity;
+import com.yalantis.ucrop.UCropFragment;
+import com.yalantis.ucrop.UCropFragmentCallback;
+import com.soundcloud.android.crop.Crop;
+import android.os.Environment;
 import org.w3c.dom.Text;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MainActivity extends AppCompatActivity {
+    private static int numCalls = 0;
     private static final int UPLOAD_REQUEST_CODE = 13;
     private static final int CROP_REQUEST_CODE = 14;
     public static Context contextOfApplication;
@@ -120,28 +128,25 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        Uri currentImageURI = resultData.getData();
         if (requestCode == UPLOAD_REQUEST_CODE) {
-            performCrop(currentImageURI);
+            Uri currentImageURI = resultData.getData();
+            beginCrop(currentImageURI);
             return;
-        } else if (requestCode == CROP_REQUEST_CODE) {
-            File imageFile = new File(getTruePath(currentImageURI));
+//        } else if (requestCode == CROP_REQUEST_CODE) {
+//            Uri currentImageURI = resultData.getData();
+//            File imageFile = new File(getTruePath(currentImageURI));
+//            ImageView imageView = findViewById(R.id.math_picture);
+//            imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
+//            currentImageFile = imageFile;
+//            return;
+        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(resultData);
+            Uri resultUri = result.getUri();
             ImageView imageView = findViewById(R.id.math_picture);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
+            imageView.setImageURI(resultUri);
+            File imageFile = new File(resultUri.getPath());
             currentImageFile = imageFile;
-            return;
         }
-
-//        File imageFile = new File(getTruePath(currentImageURI));
-//        ImageView imageView = findViewById(R.id.math_picture);
-//        imageView.setImageBitmap(BitmapFactory.decodeFile(getTruePath(currentImageURI)));
-//        currentImageFile = imageFile;
-//        final TextView latexCode = findViewById(R.id.latex_code);
-//        try {
-//            latexCode.setText(new Tasks().execute(imageFile).get());
-//        } catch (Exception e) {
-//            Log.e("lol", "caught");
-//        }
     }
 
 
@@ -151,23 +156,28 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(activity, STORAGE_PERMISSION, EXTERNAL_STORAGE_REQUEST);
         }
     }
-    private void performCrop(Uri picUri) {
-        Intent cropIntent = new Intent("com.android.camera.action.CROP");
-        //indicate image type and Uri
-        cropIntent.setDataAndType(picUri, "image/*");
-        //set crop properties
-        cropIntent.putExtra("crop", "true");
-        //indicate aspect of desired crop
-        cropIntent.putExtra("aspectX", 1);
-        cropIntent.putExtra("aspectY", 0.5);
-        //indicate output X and Y
-        cropIntent.putExtra("outputX", 256);
-        cropIntent.putExtra("outputY", 256);
-        //retrieve data on return
-        cropIntent.putExtra("return-data", true);
-        //start the activity - we handle returning in onActivityResult
-        startActivityForResult(cropIntent, CROP_REQUEST_CODE);
+//    private void performCrop(Uri picUri) {
+//        Intent cropIntent = new Intent("com.android.camera.action.CROP");
+//        cropIntent.setDataAndType(picUri, "image/*");
+//        cropIntent.putExtra("crop", "true");
+//        cropIntent.putExtra("aspectX", 1);
+//        cropIntent.putExtra("aspectY", 0.5);
+//        cropIntent.putExtra("outputX", 256);
+//        cropIntent.putExtra("outputY", 256);
+//        cropIntent.putExtra("return-data", true);
+//        startActivityForResult(cropIntent, CROP_REQUEST_CODE);
+//
+//    }
+//    private void startCrop(Uri picUri) {
+//        String destinationFileName = "croppedImage";
+//        UCrop uCrop = UCrop.of(picUri, Uri.fromFile(new File(getFilesDir(), destinationFileName + numCalls)));
+//        numCalls++;
+//        uCrop.start(MainActivity.this);
+//    }
 
+
+    private void beginCrop(Uri picUri) {
+        CropImage.activity(picUri).start(this);
     }
-
+    
 }
