@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,9 @@ import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.widget.ImageView;
 import android.graphics.BitmapFactory;
+
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 13;
     public static Context contextOfApplication;
@@ -54,7 +58,11 @@ public class MainActivity extends AppCompatActivity {
             final Button toLatexButton = findViewById(R.id.to_latex);
             toLatexButton.setOnClickListener(v -> setLatex());
             final Button uploadPhoto = findViewById(R.id.upload_photo);
-            uploadPhoto.setOnClickListener(v -> getImage());
+            uploadPhoto.setOnClickListener(v -> {
+                final TextView defaultText = findViewById(R.id.default_text);
+                defaultText.setVisibility(View.INVISIBLE);
+                getImage();
+            });
         }
     }
 
