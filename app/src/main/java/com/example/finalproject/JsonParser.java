@@ -1,9 +1,6 @@
 package com.example.finalproject;
 
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
-import org.json.JSONException;
 
 /**
  * Class to parse json string and return latex formatted string.
@@ -26,7 +23,7 @@ class JsonParser {
             JSONObject result = new JSONObject(json);
             try {
                 Double confidence = (Double) result.get("latex_confidence");
-                if (confidence < 0.5) {
+                if (confidence < 0.3) {
                     return "Cannot extract math. Try cropping better my dude.";
                 }
             } catch (Exception e) {

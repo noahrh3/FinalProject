@@ -18,23 +18,11 @@ import android.widget.Toast;
 
 import java.io.File;
 
-import android.database.Cursor;
-import android.provider.MediaStore;
 import android.Manifest;
 import android.support.v4.app.ActivityCompat;
 import android.content.pm.PackageManager;
 import android.widget.ImageView;
-import android.graphics.BitmapFactory;
-import android.content.ActivityNotFoundException;
-import com.yalantis.ucrop.UCrop;
-import com.yalantis.ucrop.UCropActivity;
-import com.yalantis.ucrop.UCropFragment;
-import com.yalantis.ucrop.UCropFragmentCallback;
-import com.soundcloud.android.crop.Crop;
-import android.os.Environment;
-import org.w3c.dom.Text;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MainActivity extends AppCompatActivity {
     private static final int UPLOAD_REQUEST_CODE = 13;
@@ -109,14 +97,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == UPLOAD_REQUEST_CODE) {
             Uri currentImageURI = resultData.getData();
             beginCrop(currentImageURI);
-            return;
         } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(resultData);
             Uri resultUri = result.getUri();
             ImageView imageView = findViewById(R.id.math_picture);
             imageView.setImageURI(resultUri);
-            File imageFile = new File(resultUri.getPath());
-            currentImageFile = imageFile;
+            currentImageFile = new File(resultUri.getPath());
         }
     }
 

@@ -1,22 +1,7 @@
 package com.example.finalproject;
 
-import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ContentResolver;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.View;
 import android.util.Base64;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,18 +12,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ByteArrayOutputStream;
 import android.os.AsyncTask;
-import java.net.URI;
-import java.nio.file.Files;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap;
 
 public class Tasks extends AsyncTask<File, Void, String> {
-    public static boolean ApiIsWorking = false;
+    static boolean ApiIsWorking = false;
     protected String doInBackground(File... imageFiles) {
-        Log.e("APICHECK", "API CALLED");
+        Log.e("API CHECK", "API CALLED");
         if (imageFiles.length <= 0) {
             return "you have to select a file bro";
         }
